@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Contact Us — ALPHAdominico</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090f;--card:#0f1117;
+  --border:rgba(255,255,255,0.06);--border-h:rgba(168,85,247,0.22);
+  --purple:#a855f7;--purple-l:#c084fc;--purple-d:rgba(168,85,247,0.12);
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;
+  --text:#e2e8f0;--muted:#94a3b8;--dim:#6b7280;--dimmer:#374151;
+}
+html{scroll-behavior:smooth}
+body{font-family:'IBM Plex Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.8;overflow-x:hidden}
+a{color:var(--purple-l);text-decoration:none}a:hover{text-decoration:underline}
+nav{position:sticky;top:0;z-index:100;background:rgba(9,9,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 28px;max-width:960px;margin:0 auto}
+.brand{font-size:16px;font-weight:700;letter-spacing:-.3px;color:#fff;text-decoration:none}
+.brand span{color:var(--purple);font-weight:400}
+.nav-back{font-size:12px;color:var(--dim);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--text);text-decoration:none}
+.wrap{max-width:960px;margin:0 auto;padding:60px 28px 80px}
+.page-tag{display:inline-block;background:var(--purple-d);color:var(--purple-l);border:1px solid rgba(168,85,247,.25);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+h1{font-size:32px;font-weight:700;letter-spacing:-.5px;color:#fff;margin-bottom:8px}
+.sub{font-size:14px;color:var(--dim);margin-bottom:48px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px}
+@media(max-width:640px){.contact-grid{grid-template-columns:1fr}}
+.contact-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color .25s}
+.contact-card:hover{border-color:var(--border-h)}
+.cc-icon{font-size:24px;margin-bottom:14px}
+.cc-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:6px}
+.cc-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:8px}
+.cc-body{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:14px}
+.cc-link{display:inline-block;font-size:13px;font-weight:600;color:var(--purple-l);border:1px solid rgba(168,85,247,.3);border-radius:8px;padding:8px 16px;transition:all .2s}
+.cc-link:hover{background:var(--purple-d);text-decoration:none;border-color:rgba(168,85,247,.5)}
+.cc-note{font-size:11px;color:var(--dim);margin-top:8px}
+.business-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;margin-bottom:40px}
+.bc-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:20px}
+.bc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
+.bc-field{border-left:2px solid rgba(168,85,247,.3);padding-left:14px}
+.bc-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:4px}
+.bc-value{font-size:13px;color:var(--muted);font-weight:500}
+.bc-value a{color:var(--purple-l)}
+.faq-mini{margin-top:40px}
+.faq-mini-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:20px}
+.faq-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 22px;margin-bottom:10px}
+.faq-q{font-size:13.5px;font-weight:600;color:#fff;margin-bottom:6px}
+.faq-a{font-size:13px;color:var(--muted);line-height:1.75}
+.disclaimer-strip{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:16px 20px;margin-top:40px}
+.ds-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#f87171;margin-bottom:6px}
+.ds-body{font-size:12.5px;color:#fca5a5;line-height:1.75}
+footer{border-top:1px solid var(--border);padding:28px 0;margin-top:60px}
+.footer-inner{max-width:960px;margin:0 auto;padding:0 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-brand{font-size:13px;font-weight:700;color:#fff}
+.footer-brand span{color:var(--purple);font-weight:400}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:11px;color:var(--dim)}.footer-links a:hover{color:var(--muted);text-decoration:none}
+.footer-copy{width:100%;font-size:11px;color:var(--dimmer);border-top:1px solid var(--border);padding-top:14px;margin-top:8px;line-height:1.85}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span>ALPHA</span>dominico</a>
+    <a href="index.html" class="nav-back">← Back to Home</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="page-tag">Support</div>
+  <h1>Contact Us</h1>
+  <p class="sub">We typically respond within 1–3 business days (Mon–Fri, IST).</p>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="cc-icon">📧</div>
+      <div class="cc-type">Primary Contact</div>
+      <div class="cc-title">General Support</div>
+      <div class="cc-body">For subscription queries, account issues, billing questions, and general enquiries about the Service.</div>
+      <a href="mailto:support@alphadominico.com" class="cc-link">support@alphadominico.com</a>
+      <div class="cc-note">Response: 1–3 business days</div>
+    </div>
+    <div class="contact-card">
+      <div class="cc-icon">💳</div>
+      <div class="cc-type">Billing &amp; Payments</div>
+      <div class="cc-title">Billing Queries</div>
+      <div class="cc-body">For refund requests, payment failures, duplicate charges, or subscription cancellation assistance.</div>
+      <a href="mailto:support@alphadominico.com?subject=Billing%20Query" class="cc-link">Email with subject: Billing Query</a>
+      <div class="cc-note">Include your Razorpay payment ID</div>
+    </div>
+    <div class="contact-card">
+      <div class="cc-icon">🔒</div>
+      <div class="cc-type">Privacy &amp; Data</div>
+      <div class="cc-title">Data Requests</div>
+      <div class="cc-body">For data access, correction, or deletion requests under our Privacy Policy. We respond within 15 business days.</div>
+      <a href="mailto:support@alphadominico.com?subject=Data%20Request" class="cc-link">Email with subject: Data Request</a>
+      <div class="cc-note">Response: up to 15 business days</div>
+    </div>
+    <div class="contact-card">
+      <div class="cc-icon">⚠️</div>
+      <div class="cc-type">Issues</div>
+      <div class="cc-title">Report a Problem</div>
+      <div class="cc-body">If you have not received a daily report, encountered a technical issue, or noticed incorrect data, let us know.</div>
+      <a href="mailto:support@alphadominico.com?subject=Issue%20Report" class="cc-link">Email with subject: Issue Report</a>
+      <div class="cc-note">Include date and description of the issue</div>
+    </div>
+  </div>
+
+  <div class="business-card">
+    <div class="bc-title">Business Information</div>
+    <div class="bc-grid">
+      <div class="bc-field">
+        <div class="bc-label">Platform</div>
+        <div class="bc-value">ALPHAdominico</div>
+      </div>
+      <div class="bc-field">
+        <div class="bc-label">Operated By</div>
+        <div class="bc-value">Piyush Anand</div>
+      </div>
+      <div class="bc-field">
+        <div class="bc-label">Business Type</div>
+        <div class="bc-value">Individual / Sole Proprietor</div>
+      </div>
+      <div class="bc-field">
+        <div class="bc-label">Country</div>
+        <div class="bc-value">India</div>
+      </div>
+      <div class="bc-field">
+        <div class="bc-label">Support Email</div>
+        <div class="bc-value"><a href="mailto:support@alphadominico.com">support@alphadominico.com</a></div>
+      </div>
+      <div class="bc-field">
+        <div class="bc-label">Support Hours</div>
+        <div class="bc-value">Mon–Fri, 10AM–6PM IST</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-mini">
+    <div class="faq-mini-title">Common Queries</div>
+    <div class="faq-row">
+      <div class="faq-q">I didn't receive today's report. What should I do?</div>
+      <div class="faq-a">Check your spam/promotions folder first. If it's not there, email us with today's date and your registered email address and we will investigate.</div>
+    </div>
+    <div class="faq-row">
+      <div class="faq-q">How do I cancel my subscription?</div>
+      <div class="faq-a">Click "Manage Billing" in the footer of any report email to access your Razorpay billing portal and cancel instantly. Alternatively, email us and we'll cancel it for you within 1 business day.</div>
+    </div>
+    <div class="faq-row">
+      <div class="faq-q">I was charged after my trial — can I get a refund?</div>
+      <div class="faq-a">Refund requests within 48 hours of the first charge are considered at our discretion. Email us immediately with your payment ID. Please review our <a href="refund.html">Refund Policy</a> for full details.</div>
+    </div>
+    <div class="faq-row">
+      <div class="faq-q">Is this service SEBI-registered investment advice?</div>
+      <div class="faq-a">No. ALPHAdominico is a rule-based stock screening tool, not a SEBI-registered investment adviser. Our screener identifies stocks meeting predefined technical and fundamental criteria. All investment decisions are your sole responsibility.</div>
+    </div>
+  </div>
+
+  <div class="disclaimer-strip">
+    <div class="ds-label">⚠ Not Investment Advice</div>
+    <div class="ds-body">ALPHAdominico is NOT a SEBI-registered investment adviser. Nothing on this platform constitutes investment advice, a buy/sell recommendation, or a guarantee of returns. All investment decisions are the sole responsibility of the user. Stock market investments are subject to market risks.</div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span>ALPHA</span>dominico</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="terms.html">Terms</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-copy">
+      ALPHAdominico is a rule-based stock screening tool. It is NOT a SEBI-registered investment adviser. Nothing on this platform constitutes investment advice or a guarantee of returns.
+      All market investments carry risk. &copy; 2025 ALPHAdominico — Individual / Sole Proprietor — India.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

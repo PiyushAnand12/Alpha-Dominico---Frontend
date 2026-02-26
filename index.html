@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ALPHAdominico — Daily US Equity Screening</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#09090f;--card:#0f1117;
+    --border:rgba(255,255,255,0.06);--border-h:rgba(168,85,247,0.25);
+    --purple:#a855f7;--purple-l:#c084fc;--purple-d:rgba(168,85,247,0.15);
+    --green:#10b981;--teal:#14b8a6;--amber:#f59e0b;--blue:#3b82f6;--red:#ef4444;
+    --text:#e2e8f0;--muted:#6b7280;--dim:#4b5563;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.6;overflow-x:hidden}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;background:rgba(9,9,15,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+  .nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 28px;max-width:1200px;margin:0 auto}
+  .brand{font-size:17px;font-weight:800;letter-spacing:-.5px;color:#fff;text-decoration:none}
+  .brand span{color:var(--purple)}
+  .nav-links{display:flex;align-items:center;gap:28px}
+  .nav-links a{font-size:12px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .2s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{background:var(--purple);color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;transition:opacity .2s;letter-spacing:.02em}
+  .nav-cta:hover{opacity:.85}
+  .nav-badge{background:rgba(239,68,68,.12);color:#f87171;border:1px solid rgba(239,68,68,.25);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+
+  /* HERO */
+  .hero-section{padding:90px 0 60px}
+  .hero-tag{display:inline-block;background:var(--purple-d);color:var(--purple-l);border:1px solid rgba(168,85,247,.3);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+  .hero-section h1{font-size:44px;font-weight:900;letter-spacing:-1.5px;color:#fff;line-height:1.1;margin-bottom:16px;max-width:700px}
+  .hero-section h1 em{font-style:normal;color:var(--purple-l)}
+  .hero-sub{font-size:14px;color:var(--muted);line-height:1.8;max-width:520px;margin-bottom:32px}
+  .hero-sub strong{color:var(--text);font-weight:600}
+
+  /* ticker strip */
+  .ticker-strip{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:32px}
+  .ticker-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-right:4px}
+  .ticker-pill{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:5px 11px;font-size:11px;font-weight:700;color:var(--text)}
+  .t-badge{font-size:8px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:1px 5px}
+  .t-strict{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.25)}
+  .t-new{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.25)}
+  .t-pass{background:rgba(59,130,246,.10);color:#60a5fa;border:1px solid rgba(59,130,246,.2)}
+
+  /* hero form */
+  .hero-form{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .hero-form input,.cta-form input,.modal input{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px 16px;font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}
+  .hero-form input{flex:1;min-width:240px}
+  .hero-form input:focus,.cta-form input:focus,.modal input:focus{border-color:var(--purple)}
+  .hero-form input::placeholder,.cta-form input::placeholder,.modal input::placeholder{color:var(--dim)}
+  .hero-form button,.cta-form button{background:var(--purple);color:#fff;border:none;border-radius:10px;padding:12px 22px;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:opacity .2s;white-space:nowrap;font-family:inherit}
+  .hero-form button:hover,.cta-form button:hover{opacity:.85}
+  .hero-note{font-size:11px;color:var(--dim)}
+  .hero-note span{color:var(--muted)}
+
+  /* SIGNUP FORM */
+  .signup-form-wrap{margin-bottom:28px}
+  .signup-form{display:flex;gap:10px;flex-wrap:wrap;max-width:460px;margin-bottom:10px}
+  .signup-form input{
+    flex:1;min-width:220px;
+    background:var(--card);border:1px solid var(--border);
+    color:var(--text);border-radius:10px;padding:12px 16px;
+    font-size:13px;font-family:inherit;outline:none;transition:border-color .2s
+  }
+  .signup-form input:focus{border-color:var(--purple)}
+  .signup-form input::placeholder{color:var(--dim)}
+  .signup-form button{
+    background:var(--purple);color:#fff;border:none;border-radius:10px;
+    padding:12px 22px;font-size:13px;font-weight:700;cursor:pointer;
+    letter-spacing:.02em;transition:opacity .2s;white-space:nowrap;font-family:inherit
+  }
+  .signup-form button:hover{opacity:.85}
+  .signup-form button:disabled{opacity:.5;cursor:not-allowed}
+  #signup-message{font-size:12px;margin-top:6px;min-height:18px}
+  .signup-disclaimer{font-size:11px;color:var(--dim);margin-top:6px}
+
+  /* PROOF BAR */
+  .proof-bar{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:20px 0;margin:60px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:20px}
+  .proof-item{text-align:center}
+  .proof-val{font-size:22px;font-weight:800;letter-spacing:-1px;color:#fff;margin-bottom:3px}
+  .proof-val span{color:var(--purple)}
+  .proof-label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:500}
+
+  /* SECTIONS */
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .sec-title{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+  .sec-head::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.05)}
+  .sec-desc{font-size:12px;color:var(--dim);margin-bottom:28px;line-height:1.75;max-width:600px}
+  section{padding:64px 0}
+
+  /* FEATURE GRID */
+  .feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+  .fc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 26px;position:relative;overflow:hidden;transition:border-color .25s,transform .25s}
+  .fc:hover{border-color:var(--border-h);transform:translateY(-2px)}
+  .fc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+  .fc-p::before{background:linear-gradient(90deg,var(--purple),transparent)}
+  .fc-g::before{background:linear-gradient(90deg,var(--green),transparent)}
+  .fc-t::before{background:linear-gradient(90deg,var(--teal),transparent)}
+  .fc-a::before{background:linear-gradient(90deg,var(--amber),transparent)}
+  .fc-b::before{background:linear-gradient(90deg,var(--blue),transparent)}
+  .fc-r::before{background:linear-gradient(90deg,var(--red),transparent)}
+  .fc-icon{font-size:22px;margin-bottom:12px}
+  .fc-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:7px}
+  .fc-body{font-size:12px;color:var(--dim);line-height:1.75}
+
+  /* PREVIEW */
+  .preview-shell{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin:32px 0}
+  .preview-bar{background:#0a0a12;border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;gap:8px}
+  .pdot{width:10px;height:10px;border-radius:50%}
+  .preview-url{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-size:10px;color:var(--dim);font-family:monospace}
+  .preview-body{padding:28px}
+  .p-regime{display:inline-flex;align-items:center;gap:10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px;padding:10px 18px;margin-bottom:20px}
+  .rdot{width:9px;height:9px;border-radius:50%;background:var(--green)}
+  .rname{font-size:12px;font-weight:700;color:var(--green)}
+  .rdesc{font-size:11px;color:var(--dim);margin-top:2px}
+  .p-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;margin-bottom:20px}
+  .psc{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px 14px;position:relative;overflow:hidden}
+  .psc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+  .psc-g::before{background:linear-gradient(90deg,var(--green),transparent)}
+  .psc-t::before{background:linear-gradient(90deg,var(--teal),transparent)}
+  .psc-a::before{background:linear-gradient(90deg,var(--amber),transparent)}
+  .psc-b::before{background:linear-gradient(90deg,var(--blue),transparent)}
+  .psc-p::before{background:linear-gradient(90deg,var(--purple),transparent)}
+  .psc-val{font-size:22px;font-weight:800;letter-spacing:-1px;line-height:1}
+  .psc-label{font-size:9px;color:var(--dim);margin-top:4px;text-transform:uppercase;letter-spacing:.06em;font-weight:500}
+  .ptbl{width:100%;border-collapse:collapse;font-size:11px}
+  .ptbl th{text-align:left;padding:8px 12px;color:var(--dim);font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+  .ptbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.03)}
+  .ptbl tbody tr:last-child td{border-bottom:none}
+  .pticker{font-weight:800;color:#fff;font-size:12px}
+  .sbar-bg{background:rgba(255,255,255,0.05);border-radius:3px;height:4px;width:56px;display:inline-block;vertical-align:middle}
+  .sbar{height:4px;border-radius:3px;background:linear-gradient(90deg,var(--purple),var(--blue));display:block}
+
+  /* AUDIENCE */
+  .aud-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+  .aud-card{background:rgba(168,85,247,.04);border:1px solid rgba(168,85,247,.12);border-radius:14px;padding:22px 24px;transition:border-color .25s}
+  .aud-card:hover{border-color:rgba(168,85,247,.3)}
+  .aud-icon{font-size:20px;margin-bottom:12px}
+  .aud-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+  .aud-body{font-size:12px;color:var(--dim);line-height:1.75}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto}
+  @media(max-width:900px){.pricing-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.pricing-grid{grid-template-columns:1fr}}
+  .pricing-card{background:var(--card);border:1px solid var(--border-h);border-radius:18px;padding:36px;position:relative;overflow:hidden;display:flex;flex-direction:column}
+  .pricing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--border-h),var(--border-h))}
+  .pricing-card.featured::before{background:linear-gradient(90deg,var(--purple),#6366f1)}
+  .pricing-card.featured{border-color:rgba(168,85,247,.4);box-shadow:0 0 40px rgba(168,85,247,.08)}
+  .plan-popular{position:absolute;top:16px;right:16px;background:rgba(168,85,247,.15);color:var(--purple);border:1px solid rgba(168,85,247,.3);border-radius:20px;padding:3px 11px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+  .pricing-badge{display:inline-block;border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px}
+  .pricing-badge.free-badge{background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.25)}
+  .pricing-badge.trial-badge{background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.25)}
+  .plan-name{font-size:14px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+  .pricing-price{font-size:44px;font-weight:900;letter-spacing:-2px;color:#fff;margin-bottom:4px;line-height:1}
+  .pricing-price sup{font-size:20px;vertical-align:top;margin-top:8px;letter-spacing:0;font-weight:700}
+  .pricing-price span{font-size:15px;font-weight:500;color:var(--muted);letter-spacing:0}
+  .pricing-price.free-price{font-size:40px;color:#60a5fa}
+  .pricing-card.free-card{border-color:rgba(59,130,246,.25)}
+  .pricing-card.free-card::before{background:linear-gradient(90deg,#3b82f6,transparent)}
+  .pricing-card.standard-card::before{background:linear-gradient(90deg,#6366f1,transparent)}
+  .pricing-sub{font-size:12px;color:var(--dim);margin-bottom:24px;line-height:1.6}
+  .pricing-divider{height:1px;background:var(--border);margin-bottom:20px}
+  .pricing-features{list-style:none;margin-bottom:28px;flex:1}
+  .pricing-features li{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--text)}
+  .pricing-features li:last-child{border-bottom:none}
+  .pricing-features li.muted-feature{color:var(--dim)}
+  .check{color:var(--green);font-size:14px;flex-shrink:0;margin-top:1px}
+  .check.blue{color:#60a5fa}
+  .cross{color:var(--dim);font-size:14px;flex-shrink:0;margin-top:1px}
+  .pricing-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:12px;padding:15px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:opacity .2s;font-family:inherit;margin-top:auto}
+  .pricing-btn:hover{opacity:.85}
+  .pricing-btn.outline-btn{background:transparent;border:1px solid var(--border-h);color:var(--text)}
+  .pricing-btn.outline-btn:hover{border-color:rgba(168,85,247,.5);color:#fff}
+  .pricing-note{text-align:center;font-size:11px;color:var(--dim);margin-top:12px}
+
+  /* FAQ */
+  .faq-list{max-width:680px;margin:0 auto}
+  .faq-item{border-bottom:1px solid var(--border)}
+  .faq-q{display:flex;justify-content:space-between;align-items:center;padding:18px 0;cursor:pointer;font-size:13px;font-weight:600;color:var(--text);gap:16px;user-select:none}
+  .faq-q:hover{color:#fff}
+  .faq-icon{font-size:18px;color:var(--purple);flex-shrink:0;transition:transform .25s;font-style:normal}
+  .faq-item.open .faq-icon{transform:rotate(45deg)}
+  .faq-a{font-size:12px;color:var(--dim);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s}
+  .faq-item.open .faq-a{max-height:200px;padding-bottom:16px}
+
+  /* CTA */
+  .cta-section{background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(99,102,241,.05));border:1px solid rgba(168,85,247,.15);border-radius:20px;padding:64px 48px;text-align:center;margin:64px 0}
+  .cta-section h2{font-size:30px;font-weight:900;letter-spacing:-1px;color:#fff;margin-bottom:10px}
+  .cta-section p{font-size:14px;color:var(--muted);margin-bottom:28px}
+  .cta-form{display:flex;gap:10px;max-width:420px;margin:0 auto}
+  .cta-form input{flex:1}
+
+  /* OBS */
+  .obs{background:var(--card);border:1px solid rgba(168,85,247,.2);border-left:3px solid var(--purple);border-radius:0 10px 10px 0;padding:14px 18px;font-size:12px;color:#94a3b8;line-height:1.85;margin-top:20px}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);padding:28px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .footer-brand{font-size:14px;font-weight:800;color:#fff}
+  .footer-brand span{color:var(--purple)}
+  .footer-links{display:flex;gap:20px;flex-wrap:wrap}
+  .footer-links a{font-size:11px;color:var(--dim);text-decoration:none;transition:color .2s}
+  .footer-links a:hover{color:var(--text)}
+  .footer-disc{width:100%;font-size:10px;color:var(--dim);line-height:1.85;border-top:1px solid var(--border);padding-top:16px;margin-top:8px}
+
+  /* MODAL */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(9,9,15,0.88);backdrop-filter:blur(14px);z-index:999;align-items:center;justify-content:center}
+  .modal-overlay.active{display:flex}
+  .modal{background:var(--card);border:1px solid var(--border-h);border-radius:18px;padding:40px;max-width:420px;width:100%;margin:20px;position:relative}
+  .modal-close{position:absolute;top:16px;right:18px;background:none;border:none;color:var(--dim);font-size:20px;cursor:pointer;line-height:1}
+  .modal h3{font-size:20px;font-weight:800;letter-spacing:-.5px;color:#fff;margin-bottom:6px}
+  .modal p{font-size:12px;color:var(--dim);margin-bottom:22px}
+  .modal input{width:100%;margin-bottom:12px}
+  .modal-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s}
+  .modal-btn:hover{opacity:.85}
+  .modal-btn.loading{opacity:.6;pointer-events:none}
+  .modal-note{font-size:10px;color:var(--dim);text-align:center;margin-top:12px}
+
+  @media(max-width:640px){
+    .hero-section h1{font-size:30px}
+    .nav-links{display:none}
+    .cta-section{padding:40px 20px}
+    .cta-form,.hero-form,.signup-form{flex-direction:column}
+    footer{flex-direction:column;align-items:flex-start}
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════ NAV ═══════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="brand"><span style="font-weight:400">ALPHA</span>dominico</a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#preview">Preview</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="nav-badge">Screening Tool Only</div>
+      <button class="nav-cta" onclick="openModal()">Start Free Trial</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═══════════════════════════════════════════════════ -->
+<div class="wrap">
+  <div class="hero-section">
+    <div class="hero-tag">Market Intelligence &mdash; US Equity</div>
+    <h1>Daily US Growth Stock<br><em>Qualification Report</em></h1>
+    <p class="hero-sub">
+      Every morning before the open, a structured list of stocks currently meeting the
+      <strong>SEPA Trend Template</strong> with fundamental overlay — EPS growth, revenue gates, RS rank.
+      No hype. No signals. Just objective qualification.
+    </p>
+
+    <!-- ✅ SIGNUP FORM — correctly placed here in the body -->
+    <div class="signup-form-wrap">
+      <form class="signup-form" id="signup-form">
+        <input
+          type="email"
+          id="email-input"
+          placeholder="your@email.com"
+          required
+        />
+        <button type="submit" id="submit-btn">
+          Get Free Daily Insights
+        </button>
+      </form>
+      <div id="signup-message"></div>
+      <p class="signup-disclaimer">
+        By subscribing, you agree to receive daily stock screening reports.
+        This is not investment advice. Unsubscribe anytime.
+      </p>
+    </div>
+
+    <div class="ticker-strip">
+      <span class="ticker-label">Today's qualifiers include</span>
+      <div class="ticker-pill">NVDA <span class="t-badge t-strict">STRICT</span></div>
+      <div class="ticker-pill">CRWD <span class="t-badge t-new">NEW</span></div>
+      <div class="ticker-pill">META <span class="t-badge t-pass">HELD</span></div>
+      <div class="ticker-pill">ANET <span class="t-badge t-strict">STRICT</span></div>
+      <div class="ticker-pill">AXON <span class="t-badge t-new">NEW</span></div>
+    </div>
+
+    <div class="hero-form">
+      <input type="email" id="hero-email" placeholder="your@email.com"/>
+      <button onclick="openModalWithEmail()">Start 7-Day Free Trial &rarr;</button>
+    </div>
+    <div class="hero-note">30 days free (no card) &nbsp;&bull;&nbsp; <span>&#x20B9;399/mo Standard</span> &nbsp;&bull;&nbsp; <span>&#x20B9;999/mo Pro</span> &nbsp;&bull;&nbsp; Indian customers</div>
+  </div>
+
+  <div class="proof-bar">
+    <div class="proof-item"><div class="proof-val">3,000<span>+</span></div><div class="proof-label">US stocks scanned daily</div></div>
+    <div class="proof-item"><div class="proof-val">8</div><div class="proof-label">Trend template criteria</div></div>
+    <div class="proof-item"><div class="proof-val">6:00<span>AM</span></div><div class="proof-label">Delivered before open (ET)</div></div>
+    <div class="proof-item"><div class="proof-val">100<span>%</span></div><div class="proof-label">Rule-based, no discretion</div></div>
+    <div class="proof-item"><div class="proof-val">0</div><div class="proof-label">Buy / sell signals</div></div>
+  </div>
+</div>
+
+<!-- ═══════ FEATURES ════════════════════════════════════════════════ -->
+<div class="wrap">
+  <section id="features">
+    <div class="sec-head"><div class="sec-title" style="color:var(--purple)">What you receive daily</div></div>
+    <p class="sec-desc">Every weekday morning, a structured HTML report lands in your inbox. No editorializing. No opinions. Pure data output from the screener.</p>
+    <div class="feature-grid">
+      <div class="fc fc-p"><div class="fc-icon">📋</div><div class="fc-title">Focus List — Top 10</div><div class="fc-body">The highest-scoring qualifiers ranked by SEPA composite score. Strict-mode stocks (RS ≥85, EPS ≥30%, Rev ≥20%) are prioritized at the top with amber badges.</div></div>
+      <div class="fc fc-g"><div class="fc-icon">🆕</div><div class="fc-title">Newly Qualified Stocks</div><div class="fc-body">Stocks that entered full qualification for the first time today — fresh additions to the universe with full score breakdown, sector tags, and EPS acceleration flags.</div></div>
+      <div class="fc fc-r"><div class="fc-icon">📉</div><div class="fc-title">Dropped Stocks</div><div class="fc-body">Stocks that fell out of qualification since yesterday. Track deterioration before it becomes a problem using fully objective, pre-defined rules.</div></div>
+      <div class="fc fc-t"><div class="fc-icon">📊</div><div class="fc-title">Market Breadth</div><div class="fc-body">Full/strict qualifier counts, 30-day historical range, 5-day rolling average, net daily flow (new minus dropped), and sector distribution breakdown.</div></div>
+      <div class="fc fc-a"><div class="fc-icon">🌐</div><div class="fc-title">Regime Classification</div><div class="fc-body">Expanding, Contracting, or Neutral — classified from breadth trend data. Gives context to whether the qualified universe is growing or shrinking over time.</div></div>
+      <div class="fc fc-b"><div class="fc-icon">📈</div><div class="fc-title">Weekly Summary (Fridays)</div><div class="fc-body">1W / 4W / 12W forward return tracking on historical qualifications vs SPY. Sector rotation heatmap. 5-day breadth trend summary.</div></div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════ PREVIEW ══════════════════════════════════════════════════ -->
+<div class="wrap">
+  <section id="preview">
+    <div class="sec-head"><div class="sec-title" style="color:var(--green)">Sample report preview</div></div>
+    <p class="sec-desc">This is what lands in your inbox each morning. Structured data, no filler — identical format every day so you can process it fast.</p>
+    <div class="preview-shell">
+      <div class="preview-bar">
+        <div class="pdot" style="background:#ef4444"></div>
+        <div class="pdot" style="background:#f59e0b"></div>
+        <div class="pdot" style="background:#10b981"></div>
+        <div class="preview-url">ALPHAdominico — February 23, 2026</div>
+      </div>
+      <div class="preview-body">
+        <div class="p-regime">
+          <div class="rdot"></div>
+          <div><div class="rname">Market Regime: Expanding</div><div class="rdesc">Breadth trend positive — qualifier count trending above 5-day average</div></div>
+        </div>
+        <div class="p-stats">
+          <div class="psc psc-g"><div class="psc-val" style="color:var(--green)">190</div><div class="psc-label">Full Qualifiers</div></div>
+          <div class="psc psc-t"><div class="psc-val" style="color:var(--teal)">54</div><div class="psc-label">Strict Mode</div></div>
+          <div class="psc psc-g"><div class="psc-val" style="color:var(--green)">12</div><div class="psc-label">New Today</div></div>
+          <div class="psc psc-b"><div class="psc-val" style="color:var(--blue)">+12</div><div class="psc-label">Net Change</div></div>
+          <div class="psc psc-a"><div class="psc-val" style="color:var(--amber)">508</div><div class="psc-label">Tech Only</div></div>
+        </div>
+        <div style="font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Focus List — Top 10</div>
+        <table class="ptbl">
+          <thead><tr><th>#</th><th>Ticker</th><th>SEPA Score</th><th>RS Rank</th><th>Sector</th><th>Type</th></tr></thead>
+          <tbody>
+            <tr><td style="color:var(--dim)">1</td><td class="pticker">NVDA</td><td><span style="color:var(--green);font-weight:700;margin-right:6px">88</span><span class="sbar-bg"><span class="sbar" style="width:88%"></span></span></td><td style="color:var(--text);font-weight:600">97</td><td style="color:var(--dim)">Technology</td><td><span class="t-badge t-strict">STRICT</span></td></tr>
+            <tr><td style="color:var(--dim)">2</td><td class="pticker">CRWD</td><td><span style="color:var(--green);font-weight:700;margin-right:6px">83</span><span class="sbar-bg"><span class="sbar" style="width:83%"></span></span></td><td style="color:var(--text);font-weight:600">94</td><td style="color:var(--dim)">Technology</td><td><span class="t-badge t-new">NEW</span></td></tr>
+            <tr><td style="color:var(--dim)">3</td><td class="pticker">AXON</td><td><span style="color:var(--blue);font-weight:700;margin-right:6px">76</span><span class="sbar-bg"><span class="sbar" style="width:76%"></span></span></td><td style="color:var(--text);font-weight:600">91</td><td style="color:var(--dim)">Industrials</td><td><span class="t-badge t-strict">STRICT</span></td></tr>
+            <tr><td style="color:var(--dim)">4</td><td class="pticker">ANET</td><td><span style="color:var(--blue);font-weight:700;margin-right:6px">71</span><span class="sbar-bg"><span class="sbar" style="width:71%"></span></span></td><td style="color:var(--text);font-weight:600">88</td><td style="color:var(--dim)">Technology</td><td><span class="t-badge t-pass">HELD</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="obs">⚠ &nbsp;This is a <strong>screening tool only</strong>. Reports identify stocks meeting structured SEPA criteria. They do not constitute investment advice, buy/sell signals, price targets, or any statement about future performance.</div>
+  </section>
+</div>
+
+<!-- ═══════ AUDIENCE ════════════════════════════════════════════════ -->
+<div class="wrap">
+  <section>
+    <div class="sec-head"><div class="sec-title" style="color:var(--amber)">Who this is for</div></div>
+    <p class="sec-desc">Built for structured thinkers who want data, not opinions. If you apply your own rules and just want the qualified universe served to you daily, this is the tool.</p>
+    <div class="aud-grid">
+      <div class="aud-card"><div class="aud-icon">📈</div><div class="aud-title">Growth Investors</div><div class="aud-body">Track the full NSE-qualified universe. Use breadth trends to understand when the Indian market is expanding or contracting from a growth-stock perspective.</div></div>
+      <div class="aud-card"><div class="aud-icon">⚡</div><div class="aud-title">Swing Traders</div><div class="aud-body">Focus list gives you the highest-scoring qualifiers each day. Apply your own entry timing on top of a pre-filtered, objectively qualified candidate pool.</div></div>
+      <div class="aud-card"><div class="aud-icon">🔬</div><div class="aud-title">Systematic Strategies</div><div class="aud-body">Full/strict counts, new/dropped tracking, sector weights — raw data to feed your own research process without manually screening 3,000+ stocks.</div></div>
+      <div class="aud-card"><div class="aud-icon">🗂️</div><div class="aud-title">Research Analysts</div><div class="aud-body">Regime classification and breadth history provide market structure context. Weekly reports track forward returns vs Nifty 50 across 1W / 4W / 12W horizons.</div></div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════ PRICING ══════════════════════════════════════════════════ -->
+<div class="wrap">
+  <section id="pricing">
+    <div class="sec-head"><div class="sec-title" style="color:var(--purple)">Pricing</div></div>
+    <p class="sec-desc">Start free for 30 days — no card needed. Upgrade when you're ready.</p>
+
+    <div class="pricing-grid">
+
+      <!-- FREE PLAN -->
+      <div class="pricing-card free-card">
+        <div class="pricing-badge free-badge">No Card Required</div>
+        <div class="plan-name">Free</div>
+        <div class="pricing-price free-price">&#x20B9;0<span>/month</span></div>
+        <div class="pricing-sub">Sign up with just your email. Full access for 30 days. No payment info ever asked.</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="check blue">✓</span>Daily NSE qualifier list (full universe)</li>
+          <li><span class="check blue">✓</span>Standard + Strict mode split</li>
+          <li><span class="check blue">✓</span>New &amp; dropped stock tracking</li>
+          <li><span class="check blue">✓</span>Market breadth &amp; regime classification</li>
+          <li><span class="check blue">✓</span>Sector distribution breakdown</li>
+          <li class="muted-feature"><span class="cross">✕</span>Top-10 Focus List &nbsp;<span style="font-size:10px">(paid plans)</span></li>
+          <li class="muted-feature"><span class="cross">✕</span>Weekly analytics &amp; CSV export &nbsp;<span style="font-size:10px">(paid plans)</span></li>
+          <li class="muted-feature"><span class="cross">✕</span>Historical forward return data &nbsp;<span style="font-size:10px">(paid plans)</span></li>
+        </ul>
+        <button class="pricing-btn outline-btn" onclick="openFreeModal()">Get 30 Days Free &rarr;</button>
+        <div class="pricing-note">Just your email &bull; No payment &bull; Expires after 30 days</div>
+      </div>
+
+      <!-- STANDARD PLAN -->
+      <div class="pricing-card standard-card">
+        <div class="pricing-badge trial-badge">7-Day Free Trial</div>
+        <div class="plan-name">Standard</div>
+        <div class="pricing-price"><sup>&#x20B9;</sup>399<span>/mo</span></div>
+        <div class="pricing-sub">Auto-renews monthly. Cancel anytime before renewal and you owe nothing.</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span>Everything in Free — forever</li>
+          <li><span class="check">✓</span>Daily report by 7:00 AM IST every NSE weekday</li>
+          <li><span class="check">✓</span>Breakout Readiness Score for every qualifier</li>
+          <li><span class="check">✓</span><strong>Top-10 Focus List</strong> — highest-scoring strict qualifiers</li>
+          <li><span class="check">✓</span>Friday weekly breadth summary</li>
+          <li><span class="check">✓</span>30-day breadth trend history</li>
+          <li class="muted-feature"><span class="cross">✕</span>Weekly forward return analytics &nbsp;<span style="font-size:10px">(Pro only)</span></li>
+          <li class="muted-feature"><span class="cross">✕</span>CSV export &amp; priority support &nbsp;<span style="font-size:10px">(Pro only)</span></li>
+        </ul>
+        <button class="pricing-btn" style="background:#6366f1" onclick="openModal('standard')">Start 7-Day Trial &rarr;</button>
+        <div class="pricing-note">&#x20B9;0 today &bull; Then &#x20B9;399/mo from day 8 &bull; Razorpay</div>
+      </div>
+
+      <!-- PRO PLAN -->
+      <div class="pricing-card featured">
+        <div class="plan-popular">Full Access</div>
+        <div class="pricing-badge trial-badge">7-Day Free Trial</div>
+        <div class="plan-name">Pro</div>
+        <div class="pricing-price"><sup>&#x20B9;</sup>999<span>/mo</span></div>
+        <div class="pricing-sub">Auto-renews monthly. Cancel anytime before renewal and you owe nothing.</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span>Everything in Standard — forever</li>
+          <li><span class="check">✓</span><strong>Weekly analytics report</strong> — 1W / 4W / 12W forward return stats vs Nifty 50</li>
+          <li><span class="check">✓</span><strong>CSV export</strong> — full qualifier list with all scores daily</li>
+          <li><span class="check">✓</span>Sector rotation heatmap (weekly)</li>
+          <li><span class="check">✓</span>Historical data across all qualification cycles</li>
+          <li><span class="check">✓</span><strong>Priority email support</strong> — response within 24h</li>
+          <li><span class="check">✓</span>5-day rolling breadth trend summary</li>
+          <li><span class="check">✓</span>Performance analytics vs Nifty 50 benchmark</li>
+        </ul>
+        <button class="pricing-btn" onclick="openModal('pro')">Start 7-Day Trial &rarr;</button>
+        <div class="pricing-note">&#x20B9;0 today &bull; Then &#x20B9;999/mo from day 8 &bull; Razorpay</div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:22px;font-size:12px;color:var(--dim)">
+      Payments processed securely by <strong style="color:var(--muted)">Razorpay</strong> &nbsp;&bull;&nbsp;
+      Indian customers only &nbsp;&bull;&nbsp;
+      <a href="refund.html" style="color:var(--dim)">Refund Policy</a> &nbsp;&bull;&nbsp;
+      <a href="terms.html" style="color:var(--dim)">Terms</a> &nbsp;&bull;&nbsp;
+      <a href="privacy.html" style="color:var(--dim)">Privacy</a>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════ FAQ ══════════════════════════════════════════════════════ -->
+<div class="wrap">
+  <section id="faq">
+    <div class="sec-head"><div class="sec-title" style="color:var(--blue)">Frequently asked questions</div></div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="toggleFaq(this)">Is this investment advice? <em class="faq-icon">+</em></div>
+        <div class="faq-a">No. This is a data-driven screening tool that applies predefined Multi-Factor Trend Filter criteria to NSE-listed Indian equities. It tells you which NSE stocks currently meet those rules — nothing more. No buy/sell recommendations, no price targets, no entry signals. You apply your own strategy on top of the data.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What are the qualification criteria? <em class="faq-icon">+</em></div>
+        <div class="faq-a">The Multi-Factor Trend Filter requires all 8 of: price above 150MA and 200MA, 150MA above 200MA, 200MA trending up ≥1 month, 50MA above both long MAs, price above 50MA, price within 25% of 52-week high, and RS Rank ≥70. Fundamental overlay adds EPS growth, revenue growth, and net margin gates. Strict mode raises the bar further (RS ≥85, EPS ≥30%, Rev ≥20%).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What time does the report arrive? <em class="faq-icon">+</em></div>
+        <div class="faq-a">The screener runs at 7:00AM IST each weekday morning. Reports are typically in your inbox by 7:15AM IST, well before the NSE market opens at 9:15AM IST. No reports on weekends or NSE market holidays.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">What does the free trial include? <em class="faq-icon">+</em></div>
+        <div class="faq-a">Full access to everything in your chosen plan — daily reports, focus list, breadth data, regime classification, and Friday weekly summary. The trial is 7 days on Standard and Pro plans. You won't be charged until day 8, and only if you haven't cancelled. The Free plan gives you 30 days with no card required.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How do I cancel? <em class="faq-icon">+</em></div>
+        <div class="faq-a">Click "Manage Billing" in any report email footer to access your Razorpay billing portal and cancel instantly. Or email support@alphadominico.com. Cancel before day 8 and you are charged nothing.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">How many stocks qualify on a typical day? <em class="faq-icon">+</em></div>
+        <div class="faq-a">This varies with market conditions. In strong trending NSE markets you may see 100–250 full qualifiers. In weak or choppy markets it can drop below 20. The regime classification and 30-day range in each report put today's count in context automatically.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════ CTA ═══════════════════════════════════════════════════════ -->
+<div class="wrap">
+  <div class="cta-section">
+    <h2>Start with 7 days free</h2>
+    <p>No card charged until day 8. Cancel before then and you owe nothing.</p>
+    <div class="cta-form">
+      <input type="email" id="cta-email" placeholder="your@email.com"/>
+      <button onclick="openModalWithCtaEmail()">Get Access &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ FOOTER ════════════════════════════════════════════════════ -->
+<div class="wrap">
+  <footer>
+    <div class="footer-brand"><span style="font-weight:400">ALPHA</span>dominico</div>
+    <div class="footer-links">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="/api/billing">Manage Billing</a>
+    </div>
+    <div class="footer-disc">
+      <strong>DISCLAIMER:</strong> This is a data-driven screening tool, not investment advice. Reports identify stocks meeting structured SEPA-based qualification criteria only.
+      They do not constitute buy or sell recommendations, entry signals, price targets, or any statement about future performance. All content is for educational and informational purposes only.
+      Past qualification does not predict future price movement. Always conduct independent research and consult a qualified financial advisor before making any investment decisions.
+      &copy; 2026 ALPHAdominico System v4.0
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════ FREE SIGNUP MODAL ═════════════════════════════════════════ -->
+<div class="modal-overlay" id="free-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeFreeModal()">&times;</button>
+    <h3>Start your 30-day free access</h3>
+    <p style="font-size:13px;color:var(--dim);margin-bottom:18px">No card needed. Just your email. Daily NSE screener report every weekday at 7:00 AM IST — free for 30 days.</p>
+    <input type="email" id="free-modal-email" placeholder="your@email.com" style="width:100%;background:#0a0a10;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px 14px;font-size:13px;color:#e2e8f0;font-family:inherit;outline:none;margin-bottom:10px"/>
+    <input type="text" id="free-modal-name" placeholder="Your name (optional)" style="width:100%;background:#0a0a10;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px 14px;font-size:13px;color:#e2e8f0;font-family:inherit;outline:none;margin-bottom:14px"/>
+    <button class="modal-btn" id="free-modal-btn" onclick="submitFreeSignup()" style="background:#3b82f6">Get 30 Days Free &rarr;</button>
+    <div class="modal-note" style="margin-top:12px;line-height:1.75">
+      No payment. No credit card. Expires after 30 days.<br>
+      <span style="font-size:10px;color:var(--dim)">By signing up you agree to our <a href="terms.html" style="color:var(--dim)">Terms</a> &amp; <a href="privacy.html" style="color:var(--dim)">Privacy Policy</a></span>
+    </div>
+    <div id="free-modal-success" style="display:none;margin-top:14px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:12px 16px;font-size:13px;color:#6ee7b7;text-align:center">
+      ✓ You're in! First report arrives tomorrow morning at 7:00 AM IST.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PAID PLAN MODAL ═══════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h3>Start your 7-day free trial</h3>
+    <p id="modal-plan-desc" style="font-size:13px;color:var(--dim);margin-bottom:18px">7 days free, then &#x20B9;399/month (Standard). No charge until day 8.</p>
+    <input type="email" id="modal-email" placeholder="your@email.com" style="width:100%;background:#0a0a10;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:12px 14px;font-size:13px;color:#e2e8f0;font-family:inherit;outline:none;margin-bottom:14px"/>
+    <button class="modal-btn" id="modal-btn" onclick="startCheckout()">Go to Secure Checkout &rarr;</button>
+    <div class="modal-note" style="margin-top:12px;line-height:1.75">
+      Secured by <strong style="color:var(--muted)">Razorpay</strong> &nbsp;&bull;&nbsp; Indian customers only &nbsp;&bull;&nbsp; Cancel anytime<br>
+      <a href="terms.html" style="color:var(--dim);font-size:10px">Terms</a> &nbsp;&bull;&nbsp;
+      <a href="privacy.html" style="color:var(--dim);font-size:10px">Privacy</a> &nbsp;&bull;&nbsp;
+      <a href="refund.html" style="color:var(--dim);font-size:10px">Refund Policy</a>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  /* ══════════════════════════════════════════════════════════════
+     FREE INLINE SIGNUP FORM (top of page)
+     Change BACKEND_URL to your Render URL after deployment.
+  ══════════════════════════════════════════════════════════════ */
+  const BACKEND_URL = 'http://localhost:3001'; // ← replace after deploy
+
+  document.getElementById('signup-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const emailInput = document.getElementById('email-input');
+    const submitBtn  = document.getElementById('submit-btn');
+    const message    = document.getElementById('signup-message');
+    const email      = emailInput.value.trim();
+
+    // Show loading state
+    submitBtn.disabled    = true;
+    submitBtn.textContent = 'Subscribing…';
+    message.textContent   = '';
+
+    try {
+      const response = await fetch(BACKEND_URL + '/subscribe', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email: email })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        message.style.color = '#10b981'; // green
+        message.textContent = '✓ ' + data.message;
+        emailInput.value    = '';
+      } else {
+        message.style.color = '#ef4444'; // red
+        message.textContent = '✕ ' + data.message;
+      }
+
+    } catch (err) {
+      message.style.color = '#ef4444';
+      message.textContent = '✕ Network error — please try again.';
+    } finally {
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Get Free Daily Insights';
+    }
+  });
+
+
+  /* ══════════════════════════════════════════════════════════════
+     PAID PLAN MODAL
+  ══════════════════════════════════════════════════════════════ */
+  var _selectedPlan = 'standard';
+  var _planDescs = {
+    standard: '7 days free, then \u20b9399/month (Standard). No charge until day 8.',
+    pro:      '7 days free, then \u20b9999/month (Pro). No charge until day 8.'
+  };
+
+  function openModal(plan) {
+    _selectedPlan = plan || 'standard';
+    document.getElementById('modal-plan-desc').textContent = _planDescs[_selectedPlan];
+    document.getElementById('modal').classList.add('active');
+    setTimeout(function(){ document.getElementById('modal-email').focus(); }, 100);
+  }
+  function openModalWithEmail() {
+    var e = document.getElementById('hero-email').value;
+    openModal('standard');
+    if (e) document.getElementById('modal-email').value = e;
+  }
+  function openModalWithCtaEmail() {
+    var e = document.getElementById('cta-email').value;
+    openModal('standard');
+    if (e) document.getElementById('modal-email').value = e;
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+  }
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  function startCheckout() {
+    var email = document.getElementById('modal-email').value.trim();
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    var params = new URLSearchParams({ email: email, plan: _selectedPlan });
+    window.location.href = 'checkout.html?' + params.toString();
+  }
+  document.getElementById('modal-email').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') startCheckout();
+  });
+
+
+  /* ══════════════════════════════════════════════════════════════
+     FREE SIGNUP MODAL
+  ══════════════════════════════════════════════════════════════ */
+  function openFreeModal() {
+    document.getElementById('free-modal').classList.add('active');
+    setTimeout(function(){ document.getElementById('free-modal-email').focus(); }, 100);
+  }
+  function closeFreeModal() {
+    document.getElementById('free-modal').classList.remove('active');
+  }
+  document.getElementById('free-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeFreeModal();
+  });
+  async function submitFreeSignup() {
+    var email = document.getElementById('free-modal-email').value.trim();
+    var name  = document.getElementById('free-modal-name').value.trim();
+    if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+    var btn = document.getElementById('free-modal-btn');
+    btn.textContent = 'Signing you up…';
+    btn.disabled    = true;
+    try {
+      await fetch('/api/free-signup', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email: email, name: name, plan_key: 'free' })
+      });
+    } catch(err) {}
+    document.getElementById('free-modal-success').style.display = 'block';
+    btn.style.display = 'none';
+  }
+  document.getElementById('free-modal-email').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') submitFreeSignup();
+  });
+
+
+  /* ══════════════════════════════════════════════════════════════
+     FAQ ACCORDION
+  ══════════════════════════════════════════════════════════════ */
+  function toggleFaq(el) {
+    var item    = el.closest('.faq-item');
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i){ i.classList.remove('open'); });
+    if (!wasOpen) item.classList.add('open');
+  }
+
+</script>
+
+  <!-- Add the new signup JS -->
+  <script src="frontend/script.js" defer></script>
+
+</body>
+</html>

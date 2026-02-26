@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>About — ALPHAdominico</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090f;--card:#0f1117;
+  --border:rgba(255,255,255,0.06);--border-h:rgba(168,85,247,0.22);
+  --purple:#a855f7;--purple-l:#c084fc;--purple-d:rgba(168,85,247,0.12);
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;
+  --text:#e2e8f0;--muted:#94a3b8;--dim:#6b7280;--dimmer:#374151;
+}
+html{scroll-behavior:smooth}
+body{font-family:'IBM Plex Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.8;overflow-x:hidden}
+a{color:var(--purple-l);text-decoration:none}a:hover{text-decoration:underline}
+nav{position:sticky;top:0;z-index:100;background:rgba(9,9,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:16px 28px;max-width:900px;margin:0 auto}
+.brand{font-size:16px;font-weight:700;letter-spacing:-.3px;color:#fff;text-decoration:none}
+.brand span{color:var(--purple);font-weight:400}
+.nav-back{font-size:12px;color:var(--dim);text-decoration:none}
+.nav-back:hover{color:var(--text);text-decoration:none}
+.wrap{max-width:900px;margin:0 auto;padding:60px 28px 80px}
+.page-tag{display:inline-block;background:var(--purple-d);color:var(--purple-l);border:1px solid rgba(168,85,247,.25);border-radius:20px;padding:4px 14px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px}
+h1{font-size:36px;font-weight:700;letter-spacing:-.8px;color:#fff;margin-bottom:12px;line-height:1.2}
+.lead{font-size:15px;color:var(--muted);margin-bottom:48px;line-height:1.8;max-width:620px}
+.section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.story-block{margin-bottom:48px}
+.story-block p{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:14px}
+.story-block p strong{color:var(--text)}
+.what-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:48px}
+.what-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 24px;transition:border-color .25s}
+.what-card:hover{border-color:var(--border-h)}
+.wc-icon{font-size:22px;margin-bottom:12px}
+.wc-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+.wc-body{font-size:12.5px;color:var(--dim);line-height:1.75}
+.founder-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:32px;margin-bottom:48px;display:flex;gap:32px;align-items:flex-start;flex-wrap:wrap}
+.founder-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,rgba(168,85,247,.3),rgba(99,102,241,.2));border:1px solid rgba(168,85,247,.3);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.founder-info{flex:1;min-width:200px}
+.founder-name{font-size:18px;font-weight:700;color:#fff;margin-bottom:3px}
+.founder-role{font-size:11px;color:var(--purple-l);font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.founder-bio{font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:14px}
+.founder-meta{display:flex;flex-wrap:wrap;gap:12px}
+.fm-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim)}
+.fm-icon{font-size:14px}
+.not-this{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:14px;padding:28px 32px;margin-bottom:48px}
+.nt-title{font-size:14px;font-weight:700;color:#f87171;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.nt-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:540px){.nt-grid{grid-template-columns:1fr}}
+.nt-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#fca5a5;line-height:1.7}
+.nt-x{color:#ef4444;font-weight:700;flex-shrink:0;margin-top:2px}
+.is-this{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.15);border-radius:14px;padding:28px 32px;margin-bottom:48px}
+.it-title{font-size:14px;font-weight:700;color:#34d399;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.it-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:540px){.it-grid{grid-template-columns:1fr}}
+.it-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#6ee7b7;line-height:1.7}
+.it-check{color:var(--green);font-weight:700;flex-shrink:0;margin-top:2px}
+.reg-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:48px}
+.reg-table{width:100%;font-size:13px}
+.reg-table tr{border-bottom:1px solid rgba(255,255,255,0.04)}
+.reg-table tr:last-child{border-bottom:none}
+.reg-table td{padding:10px 0;vertical-align:top}
+.reg-table td:first-child{color:var(--dim);width:200px;font-weight:500}
+.reg-table td:last-child{color:var(--muted)}
+.reg-table td:last-child strong{color:var(--text)}
+.disc-banner{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:10px;padding:18px 22px;margin-top:16px}
+.disc-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#f87171;margin-bottom:7px}
+.disc-body{font-size:13px;color:#fca5a5;line-height:1.8}
+footer{border-top:1px solid var(--border);padding:28px 0;margin-top:60px}
+.footer-inner{max-width:900px;margin:0 auto;padding:0 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-brand{font-size:13px;font-weight:700;color:#fff}
+.footer-brand span{color:var(--purple);font-weight:400}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:11px;color:var(--dim)}.footer-links a:hover{color:var(--muted);text-decoration:none}
+.footer-copy{width:100%;font-size:11px;color:var(--dimmer);border-top:1px solid var(--border);padding-top:14px;margin-top:8px;line-height:1.85}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="brand"><span>ALPHA</span>dominico</a>
+    <a href="index.html" class="nav-back">← Back to Home</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="page-tag">About</div>
+  <h1>A screening tool.<br>Not a crystal ball.</h1>
+  <p class="lead">ALPHAdominico applies objective, rule-based criteria to NSE-listed stocks every morning and delivers the results to your inbox. That's it. No predictions, no advice, no guarantees.</p>
+
+  <!-- WHAT IS THIS -->
+  <div class="section-label">What this is</div>
+  <div class="is-this">
+    <div class="it-title">✓ ALPHAdominico IS:</div>
+    <div class="it-grid">
+      <div class="it-item"><span class="it-check">✓</span>A daily automated stock screener for NSE India</div>
+      <div class="it-item"><span class="it-check">✓</span>A rule-based data filtering tool using public market data</div>
+      <div class="it-item"><span class="it-check">✓</span>A source of structured qualification lists, breadth data, and regime context</div>
+      <div class="it-item"><span class="it-check">✓</span>An informational tool to assist your own research process</div>
+      <div class="it-item"><span class="it-check">✓</span>Built and maintained by a single developer in India</div>
+      <div class="it-item"><span class="it-check">✓</span>A subscription service with transparent pricing and clear billing terms</div>
+    </div>
+  </div>
+
+  <!-- WHAT IT IS NOT -->
+  <div class="not-this">
+    <div class="nt-title">✗ ALPHAdominico is NOT:</div>
+    <div class="nt-grid">
+      <div class="nt-item"><span class="nt-x">✗</span>A SEBI-registered Investment Adviser or Research Analyst</div>
+      <div class="nt-item"><span class="nt-x">✗</span>A buy or sell recommendation service</div>
+      <div class="nt-item"><span class="nt-x">✗</span>A profit guarantee or assured-return scheme</div>
+      <div class="nt-item"><span class="nt-x">✗</span>A portfolio management or advisory service</div>
+      <div class="nt-item"><span class="nt-x">✗</span>A signal provider or trading tip service</div>
+      <div class="nt-item"><span class="nt-x">✗</span>Regulated under any SEBI investment-related regulation</div>
+    </div>
+  </div>
+
+  <!-- STORY -->
+  <div class="section-label">The story</div>
+  <div class="story-block">
+    <p>ALPHAdominico started as a personal tool. <strong>I was spending too much time manually checking whether stocks met a specific set of technical and fundamental rules</strong> — price above key moving averages, earnings growth, relative strength, and proximity to 52-week highs. I automated it.</p>
+    <p>The screener runs every morning before the NSE opens. It checks thousands of listed stocks against eight technical criteria and a fundamental overlay, then emails the results. The logic is fixed and mechanical. The same rules run every single day.</p>
+    <p><strong>Over time, others asked for access.</strong> So I structured it as a subscription service. What you receive is exactly what I use personally — a daily list of stocks that currently meet predefined criteria, nothing more.</p>
+    <p>I'm a solo developer, not a financial institution. I don't manage your money, pick stocks for you, or claim to know where markets are going. The screener tells you which stocks met the rules today. What you do with that information is entirely your call.</p>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section-label">How it works</div>
+  <div class="what-grid">
+    <div class="what-card">
+      <div class="wc-icon">⚙️</div>
+      <div class="wc-title">Rule-Based Engine</div>
+      <div class="wc-body">8 technical criteria + fundamental gates applied to every NSE EQ-series stock. The same rules, every day, with no discretion.</div>
+    </div>
+    <div class="what-card">
+      <div class="wc-icon">📊</div>
+      <div class="wc-title">Public Market Data</div>
+      <div class="wc-body">Price, volume, moving averages, and fundamental data sourced from publicly available market feeds (yfinance / NSE data).</div>
+    </div>
+    <div class="what-card">
+      <div class="wc-icon">📧</div>
+      <div class="wc-title">Daily Email Report</div>
+      <div class="wc-body">Results delivered before the market opens — 7:00 AM IST every weekday. HTML report with qualification lists, breadth data, and regime context.</div>
+    </div>
+    <div class="what-card">
+      <div class="wc-icon">📈</div>
+      <div class="wc-title">Historical Tracking</div>
+      <div class="wc-body">Forward return statistics tracked for informational and statistical purposes only. Past statistics do not predict future performance.</div>
+    </div>
+  </div>
+
+  <!-- FOUNDER -->
+  <div class="section-label">The person behind it</div>
+  <div class="founder-card">
+    <div class="founder-avatar">👤</div>
+    <div class="founder-info">
+      <div class="founder-name">Piyush Anand</div>
+      <div class="founder-role">Founder &amp; Developer — ALPHAdominico</div>
+      <div class="founder-bio">
+        Solo developer and market data enthusiast building tools for systematic equity research. ALPHAdominico is built and maintained independently — there is no team, no VC funding, no corporate structure. Just a developer who wanted a better morning screener.
+      </div>
+      <div class="founder-meta">
+        <div class="fm-item"><span class="fm-icon">📍</span>India</div>
+        <div class="fm-item"><span class="fm-icon">🏢</span>Individual / Sole Proprietor</div>
+        <div class="fm-item"><span class="fm-icon">📧</span><a href="mailto:support@alphadominico.com">support@alphadominico.com</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTRATION INFO -->
+  <div class="section-label">Registration &amp; Compliance Status</div>
+  <div class="reg-card">
+    <table class="reg-table">
+      <tr><td>Business Type</td><td>Individual / Sole Proprietor</td></tr>
+      <tr><td>Location</td><td>India</td></tr>
+      <tr><td>SEBI Registration</td><td><strong>Not registered</strong> as Investment Adviser, Research Analyst, or Portfolio Manager</td></tr>
+      <tr><td>GST Registration</td><td>Not currently registered (below threshold; will be updated when applicable)</td></tr>
+      <tr><td>Payment Processing</td><td>Razorpay (RBI-authorised payment aggregator)</td></tr>
+      <tr><td>Service Type</td><td>Digital subscription — stock screening data tool</td></tr>
+      <tr><td>Advisory Status</td><td>This service does not provide investment advice of any kind</td></tr>
+    </table>
+  </div>
+
+  <div class="disc-banner">
+    <div class="disc-label">⚠ Risk Disclosure &amp; Disclaimer</div>
+    <div class="disc-body">
+      Stock market investments are subject to market risks. The performance of any stock identified by this screener in the past is not indicative of its future performance. No representation or warranty is made that any qualifying stock will appreciate in value or generate a profit. You are solely responsible for any investment or trading decision you make. Before investing, consider consulting a SEBI-registered investment adviser or qualified financial professional. <strong>ALPHAdominico is not liable for any investment losses whatsoever.</strong>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span>ALPHA</span>dominico</div>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="terms.html">Terms</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="refund.html">Refund Policy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-copy">
+      ALPHAdominico is a rule-based stock screening tool. It is NOT a SEBI-registered investment adviser. Nothing on this platform constitutes investment advice or a guarantee of returns.
+      All market investments carry risk. &copy; 2025 ALPHAdominico — Piyush Anand — Individual / Sole Proprietor — India.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

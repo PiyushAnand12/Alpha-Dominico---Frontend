@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Subscribe — ALPHAdominico</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#09090f;--card:#0f1117;--card2:#0c0c14;
+  --border:rgba(255,255,255,0.06);--border-h:rgba(168,85,247,0.22);
+  --purple:#a855f7;--purple-l:#c084fc;--purple-d:rgba(168,85,247,0.12);
+  --green:#10b981;--amber:#f59e0b;--red:#ef4444;--blue:#3b82f6;
+  --text:#e2e8f0;--muted:#94a3b8;--dim:#6b7280;--dimmer:#374151;
+}
+body{font-family:'IBM Plex Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.7;min-height:100vh}
+a{color:var(--purple-l);text-decoration:none}a:hover{text-decoration:underline}
+nav{background:rgba(9,9,15,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 28px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:16px;font-weight:700;color:#fff;text-decoration:none}
+.brand span{color:var(--purple);font-weight:400}
+.not-advice-badge{background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.25);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+
+.page-wrap{max-width:1100px;margin:0 auto;padding:48px 24px 80px;display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:start}
+@media(max-width:820px){.page-wrap{grid-template-columns:1fr;gap:28px}}
+
+/* LEFT: Plan Selector */
+.plans-col h1{font-size:24px;font-weight:700;letter-spacing:-.4px;color:#fff;margin-bottom:6px}
+.plans-col .sub{font-size:13px;color:var(--dim);margin-bottom:28px}
+.plan-card{background:var(--card);border:2px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:12px;cursor:pointer;transition:all .2s;position:relative}
+.plan-card:hover{border-color:rgba(168,85,247,.3)}
+.plan-card.selected{border-color:var(--purple);background:rgba(168,85,247,.06)}
+.plan-card input[type=radio]{position:absolute;opacity:0;pointer-events:none}
+.plan-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.plan-name{font-size:15px;font-weight:700;color:#fff}
+.plan-badge{background:var(--purple-d);color:var(--purple-l);border:1px solid rgba(168,85,247,.25);border-radius:6px;padding:2px 9px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.plan-price-row{display:flex;align-items:baseline;gap:4px;margin-bottom:4px}
+.plan-price{font-size:28px;font-weight:800;letter-spacing:-1px;color:#fff;font-family:'IBM Plex Mono',monospace}
+.plan-freq{font-size:12px;color:var(--dim)}/month
+.plan-desc{font-size:12.5px;color:var(--dim);line-height:1.7;margin-top:8px}
+.plan-features{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.pf{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--muted)}
+.plan-selected-indicator{position:absolute;top:14px;right:14px;width:20px;height:20px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.plan-card.selected .plan-selected-indicator{background:var(--purple);border-color:var(--purple);color:#fff;font-size:11px}
+
+.auto-renewal-notice{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:14px 18px;margin:16px 0;display:flex;gap:12px;align-items:flex-start}
+.arn-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.arn-text{font-size:12.5px;color:#fcd34d;line-height:1.7}
+.arn-text strong{color:#fde68a}
+
+/* RIGHT: Checkout */
+.checkout-col{}
+.checkout-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;position:sticky;top:80px}
+.checkout-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:20px}
+
+.order-summary{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:20px}
+.os-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px}
+.os-row:last-child{margin-bottom:0;padding-top:8px;border-top:1px solid var(--border);font-weight:700;font-size:14px}
+.os-label{color:var(--dim)}
+.os-value{color:var(--text)}
+.os-total-label{color:var(--text)}
+.os-total-value{color:#fff;font-family:'IBM Plex Mono',monospace}
+
+/* Form */
+.form-group{margin-bottom:16px}
+.form-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin-bottom:6px;display:block}
+.form-input{width:100%;background:#0a0a10;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:13.5px;color:var(--text);font-family:'IBM Plex Sans',sans-serif;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:rgba(168,85,247,.5)}
+.form-input::placeholder{color:var(--dimmer)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Consent */
+.consent-block{margin:18px 0}
+.consent-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.consent-item input[type=checkbox]{margin-top:3px;accent-color:var(--purple);flex-shrink:0;width:14px;height:14px;cursor:pointer}
+.consent-label{font-size:12px;color:var(--dim);line-height:1.7;cursor:pointer}
+.consent-label a{color:var(--purple-l)}
+
+/* Pay button */
+.pay-btn{width:100%;background:var(--purple);color:#fff;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:700;font-family:'IBM Plex Sans',sans-serif;cursor:pointer;transition:all .2s;letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:10px}
+.pay-btn:hover{background:#9333ea}
+.pay-btn:disabled{background:var(--dimmer);cursor:not-allowed;opacity:.5}
+.pay-btn .btn-amount{font-family:'IBM Plex Mono',monospace;font-size:15px}
+
+.post-btn-links{display:flex;justify-content:center;gap:18px;margin-top:12px;flex-wrap:wrap}
+.post-btn-links a{font-size:11px;color:var(--dim)}
+.post-btn-links a:hover{color:var(--muted);text-decoration:none}
+.post-btn-links .sep{color:var(--dimmer)}
+
+.secure-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px}
+.secure-row span{font-size:11px;color:var(--dimmer)}
+.secure-row .lock{font-size:13px}
+
+/* Disclaimer */
+.checkout-disc{background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.12);border-radius:8px;padding:13px 16px;margin-top:16px}
+.cd-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:#f87171;margin-bottom:5px}
+.cd-body{font-size:11px;color:rgba(252,165,165,.7);line-height:1.75}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e293b;border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:12px 20px;font-size:13px;color:var(--text);display:none;z-index:999;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="brand"><span>ALPHA</span>dominico</a>
+  <div class="not-advice-badge">Not Investment Advice</div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- LEFT: Plan selection -->
+  <div class="plans-col">
+    <h1>Choose your plan</h1>
+    <p class="sub">Daily NSE equity screener. Delivered every weekday at 7:00 AM IST.</p>
+
+    <!-- Standard Plan -->
+    <div class="plan-card selected" id="card-standard" onclick="selectPlan('standard')">
+      <input type="radio" name="plan" id="plan-standard" value="standard" checked/>
+      <div class="plan-selected-indicator" id="indicator-standard">✓</div>
+      <div class="plan-header">
+        <div class="plan-name">Standard</div>
+      </div>
+      <div class="plan-price-row">
+        <div class="plan-price">₹399</div>
+        <div class="plan-freq">/month</div>
+      </div>
+      <div class="plan-desc">Full qualification list, standard + strict screener results, market breadth, sector breakdown, and regime classification. Delivered daily.</div>
+      <div class="plan-features">
+        <span class="pf">Daily email report</span>
+        <span class="pf">Full qualification list</span>
+        <span class="pf">Market breadth</span>
+        <span class="pf">Sector data</span>
+        <span class="pf">7-day free trial</span>
+      </div>
+    </div>
+
+    <!-- Pro Plan -->
+    <div class="plan-card" id="card-pro" onclick="selectPlan('pro')">
+      <input type="radio" name="plan" id="plan-pro" value="pro"/>
+      <div class="plan-selected-indicator" id="indicator-pro"></div>
+      <div class="plan-header">
+        <div class="plan-name">Pro</div>
+        <div class="plan-badge">Full Access</div>
+      </div>
+      <div class="plan-price-row">
+        <div class="plan-price">₹999</div>
+        <div class="plan-freq">/month</div>
+      </div>
+      <div class="plan-desc">Everything in Standard, plus strict-mode focus list, weekly performance analytics (1W/4W/12W forward return stats), CSV export, and priority email support.</div>
+      <div class="plan-features">
+        <span class="pf">Everything in Standard</span>
+        <span class="pf">Focus List (Top 10)</span>
+        <span class="pf">Weekly analytics report</span>
+        <span class="pf">CSV export</span>
+        <span class="pf">Priority support</span>
+        <span class="pf">7-day free trial</span>
+      </div>
+    </div>
+
+    <!-- Auto-renewal notice -->
+    <div class="auto-renewal-notice">
+      <div class="arn-icon">🔄</div>
+      <div class="arn-text">
+        <strong>Auto-renewal:</strong> Your subscription renews automatically every month on your billing date. You will be charged the plan price shown above each cycle. Cancel any time before your renewal date to avoid the next charge. No refunds for completed billing periods.
+      </div>
+    </div>
+
+    <!-- Risk disclaimer on left column -->
+    <div style="background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.12);border-radius:10px;padding:16px 20px;margin-top:8px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#f87171;margin-bottom:7px">⚠ Important Notice</div>
+      <div style="font-size:12.5px;color:rgba(252,165,165,.75);line-height:1.8">
+        ALPHAdominico is a <strong style="color:#fca5a5">rule-based stock screening tool</strong>, not a SEBI-registered investment adviser. This service does not provide investment advice, buy/sell recommendations, or guarantees of any returns. All investment decisions are made solely by you at your own risk. Stock market investments carry inherent risk and you may lose money.
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Checkout box -->
+  <div class="checkout-col">
+    <div class="checkout-box">
+      <div class="checkout-title">Secure Checkout</div>
+
+      <!-- Order summary -->
+      <div class="order-summary">
+        <div class="os-row">
+          <span class="os-label">Plan</span>
+          <span class="os-value" id="summary-plan">Standard</span>
+        </div>
+        <div class="os-row">
+          <span class="os-label">Billing</span>
+          <span class="os-value">Monthly</span>
+        </div>
+        <div class="os-row">
+          <span class="os-label">Trial period</span>
+          <span class="os-value" style="color:var(--green)">7 days free</span>
+        </div>
+        <div class="os-row">
+          <span class="os-total-label">Due today</span>
+          <span class="os-total-value">₹0.00</span>
+        </div>
+        <div class="os-row" style="border-top:none;padding-top:4px;font-size:11px;color:var(--dim);font-weight:400">
+          <span>Then <span id="summary-then">₹399/month</span> from day 8 unless cancelled</span>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="form-group">
+        <label class="form-label" for="f-email">Email Address</label>
+        <input class="form-input" type="email" id="f-email" placeholder="you@example.com" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="f-name">Full Name</label>
+        <input class="form-input" type="text" id="f-name" placeholder="Your name" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="f-phone">Phone Number</label>
+        <input class="form-input" type="tel" id="f-phone" placeholder="+91 9876543210" required/>
+        <div style="font-size:11px;color:var(--dimmer);margin-top:4px">Required for payment processing</div>
+      </div>
+
+      <!-- Consent checkboxes -->
+      <div class="consent-block">
+        <div class="consent-item">
+          <input type="checkbox" id="cb-terms" required/>
+          <label class="consent-label" for="cb-terms">
+            I have read and agree to the <a href="terms.html" target="_blank">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>
+          </label>
+        </div>
+        <div class="consent-item">
+          <input type="checkbox" id="cb-renewal" required/>
+          <label class="consent-label" for="cb-renewal">
+            I understand this is an auto-renewing subscription. I will be charged <strong id="cb-amount">₹399/month</strong> from day 8 of my trial until I cancel. I can cancel anytime via email or the billing portal.
+          </label>
+        </div>
+        <div class="consent-item">
+          <input type="checkbox" id="cb-disclaimer" required/>
+          <label class="consent-label" for="cb-disclaimer">
+            I understand this is a <strong>screening data tool only</strong>, not investment advice. ALPHAdominico is not SEBI-registered. All investment decisions are my own responsibility.
+          </label>
+        </div>
+      </div>
+
+      <!-- Pay button -->
+      <button class="pay-btn" id="pay-btn" onclick="initiatePayment()">
+        <span>Start 7-Day Free Trial</span>
+        <span class="btn-amount" id="btn-amount">· ₹399/mo</span>
+      </button>
+
+      <!-- Post-button links -->
+      <div class="post-btn-links">
+        <a href="refund.html" target="_blank">Refund Policy</a>
+        <span class="sep">·</span>
+        <a href="terms.html" target="_blank">Terms</a>
+        <span class="sep">·</span>
+        <a href="privacy.html" target="_blank">Privacy</a>
+        <span class="sep">·</span>
+        <a href="contact.html" target="_blank">Support</a>
+      </div>
+
+      <div class="secure-row">
+        <span class="lock">🔒</span>
+        <span>Secured by Razorpay</span>
+        <span>·</span>
+        <span>PCI-DSS compliant</span>
+      </div>
+
+      <!-- Checkout disclaimer -->
+      <div class="checkout-disc">
+        <div class="cd-title">Not Investment Advice</div>
+        <div class="cd-body">This tool screens stocks by rule. It does not advise, recommend, or guarantee any outcome. Market investments carry risk. You may lose money. Consult a SEBI-registered adviser before investing.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Razorpay script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const PLANS = {
+  standard: {
+    name: "Standard",
+    amount: 39900,       // in paise (₹399)
+    display: "₹399",
+    monthlyText: "₹399/month",
+    razorpayPlanId: "YOUR_RAZORPAY_STANDARD_PLAN_ID"
+  },
+  pro: {
+    name: "Pro",
+    amount: 99900,       // in paise (₹999)
+    display: "₹999",
+    monthlyText: "₹999/month",
+    razorpayPlanId: "YOUR_RAZORPAY_PRO_PLAN_ID"
+  }
+};
+
+let currentPlan = "standard";
+
+function selectPlan(plan) {
+  currentPlan = plan;
+  // Update card styles
+  document.getElementById("card-standard").classList.toggle("selected", plan === "standard");
+  document.getElementById("card-pro").classList.toggle("selected", plan === "pro");
+  document.getElementById("indicator-standard").textContent = plan === "standard" ? "✓" : "";
+  document.getElementById("indicator-pro").textContent = plan === "pro" ? "✓" : "";
+  // Update summary
+  const p = PLANS[plan];
+  document.getElementById("summary-plan").textContent = p.name;
+  document.getElementById("summary-then").textContent = p.monthlyText;
+  document.getElementById("cb-amount").textContent = p.monthlyText;
+  document.getElementById("btn-amount").textContent = "· " + p.display + "/mo";
+}
+
+function showToast(msg, duration=3000) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", duration);
+}
+
+function validateForm() {
+  const email = document.getElementById("f-email").value.trim();
+  const name  = document.getElementById("f-name").value.trim();
+  const phone = document.getElementById("f-phone").value.trim();
+  if (!email || !email.includes("@")) { showToast("Please enter a valid email address."); return false; }
+  if (!name) { showToast("Please enter your name."); return false; }
+  if (!phone) { showToast("Please enter your phone number."); return false; }
+  if (!document.getElementById("cb-terms").checked)      { showToast("Please accept the Terms & Conditions."); return false; }
+  if (!document.getElementById("cb-renewal").checked)    { showToast("Please acknowledge the auto-renewal terms."); return false; }
+  if (!document.getElementById("cb-disclaimer").checked) { showToast("Please acknowledge the screening tool disclaimer."); return false; }
+  return true;
+}
+
+async function initiatePayment() {
+  if (!validateForm()) return;
+  const btn = document.getElementById("pay-btn");
+  btn.disabled = true;
+  btn.innerHTML = '<span>Creating subscription…</span>';
+
+  const email = document.getElementById("f-email").value.trim();
+  const name  = document.getElementById("f-name").value.trim();
+  const phone = document.getElementById("f-phone").value.trim();
+  const plan  = PLANS[currentPlan];
+
+  try {
+    // Step 1: Create subscription order on your backend
+    const resp = await fetch("/api/create-subscription", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        plan_id: plan.razorpayPlanId,
+        email,
+        name,
+        phone,
+        plan_key: currentPlan
+      })
+    });
+    if (!resp.ok) throw new Error("Failed to create subscription");
+    const { subscription_id, key_id } = await resp.json();
+
+    // Step 2: Open Razorpay modal
+    const rzp = new Razorpay({
+      key: key_id,
+      subscription_id: subscription_id,
+      name: "ALPHAdominico",
+      description: `${plan.name} Plan — NSE Stock Screener`,
+      image: "",             // optional: logo URL
+      prefill: { name, email, contact: phone },
+      theme: { color: "#a855f7" },
+      modal: {
+        ondismiss: function() {
+          btn.disabled = false;
+          btn.innerHTML = '<span>Start 7-Day Free Trial</span><span class="btn-amount" id="btn-amount">· ' + plan.display + '/mo</span>';
+        }
+      },
+      handler: function(response) {
+        // Step 3: Confirm payment on backend
+        fetch("/api/payment-success", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_subscription_id: response.razorpay_subscription_id,
+            razorpay_signature: response.razorpay_signature,
+            email, name, phone, plan_key: currentPlan
+          })
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.status === "ok") {
+            window.location.href = "/welcome.html?plan=" + currentPlan;
+          } else {
+            showToast("Payment confirmation failed. Please contact support.");
+            btn.disabled = false;
+          }
+        });
+      }
+    });
+    rzp.open();
+  } catch(err) {
+    showToast("Something went wrong. Please try again or contact support.");
+    btn.disabled = false;
+    btn.innerHTML = '<span>Start 7-Day Free Trial</span><span class="btn-amount">· ' + plan.display + '/mo</span>';
+  }
+}
+</script>
+
+</body>
+</html>
